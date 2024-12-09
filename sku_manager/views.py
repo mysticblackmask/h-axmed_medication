@@ -1,4 +1,3 @@
-# views.py
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -82,12 +81,12 @@ def delete_sku(request, pk):
                         'dosage': openapi.Schema(type=openapi.TYPE_INTEGER, description="Dosage amount."),
                         'unit': openapi.Schema(type=openapi.TYPE_STRING, description="Unit (e.g., mg)."),
                     },
-                    required=['medication_name']  # Specify required fields here
+                    required=['medication_name']
                 ),
                 description="List of SKUs to be created."
             )
         },
-        required=['skus'],  # The outer "skus" array is required
+        required=['skus'],
     ),
     responses={
         201: openapi.Response(
