@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from .models import MedicationSKU
 from .serializers import MedicationSKUSerializer
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 @api_view(['GET'])
 def read_skus(request):
     if request.method == 'GET':
@@ -64,6 +67,50 @@ def delete_sku(request, pk):
         except MedicationSKU.DoesNotExist:
             return Response({'message': 'No data found for the given ID'}, status=status.HTTP_404_NOT_FOUND)
 
+@swagger_auto_schema(
+    method='post',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'skus': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'medication_name': openapi.Schema(type=openapi.TYPE_STRING, description="Name of the medication."),
+                        'formulation': openapi.Schema(type=openapi.TYPE_STRING, description="Formulation (e.g., tablet, capsule)."),
+                        'dosage': openapi.Schema(type=openapi.TYPE_INTEGER, description="Dosage amount."),
+                        'unit': openapi.Schema(type=openapi.TYPE_STRING, description="Unit (e.g., mg)."),
+                    },
+                    required=['medication_name']  # Specify required fields here
+                ),
+                description="List of SKUs to be created."
+            )
+        },
+        required=['skus'],  # The outer "skus" array is required
+    ),
+    responses={
+        201: openapi.Response(
+            description="List of created SKUs",
+            schema=openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'id': openapi.Schema(type=openapi.TYPE_INTEGER, description="ID of the SKU."),
+                        'medication_name': openapi.Schema(type=openapi.TYPE_STRING),
+                        'formulation': openapi.Schema(type=openapi.TYPE_STRING),
+                        'dosage': openapi.Schema(type=openapi.TYPE_INTEGER),
+                        'unit': openapi.Schema(type=openapi.TYPE_STRING),
+                    }
+                )
+            )
+        ),
+        400: "Validation errors or missing required fields",
+    },
+    operation_summary="Bulk create SKUs",
+    operation_description="Create multiple SKUs in a single request by providing an array of SKU objects."
+)
 
 @api_view(['POST'])
 def bulk_create_skus(request):
