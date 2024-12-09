@@ -40,7 +40,7 @@ This project is a backend service for managing medication SKUs, including functi
 
 1. **Clone the Repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/mysticblackmask/h-axmed_medication.git
    cd axmed
    ```
 
