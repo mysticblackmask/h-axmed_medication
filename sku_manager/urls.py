@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-    read_skus
+    read_skus,
     create_sku,
     update_sku,
     delete_sku,
