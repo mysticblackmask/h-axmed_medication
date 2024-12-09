@@ -2,6 +2,14 @@
 
 This project is a backend service for managing medication SKUs, including functionalities for CRUD operations and bulk creation of SKUs. It is built using Django and Django REST Framework.
 
+## Test with Swagger
+
+```url
+  https://h-axmed-medication.onrender.com/docs/
+```
+
+🚀 **Live Demo**: [Click Me](https://h-axmed-medication.onrender.com/docs/)
+
 ## Features
 
 - **CRUD Operations**:
