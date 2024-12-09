@@ -29,6 +29,18 @@ def create_sku(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@swagger_auto_schema(
+    method='put',
+    request_body=MedicationSKUSerializer,
+    responses={
+        200: MedicationSKUSerializer,
+        400: 'Validation errors',
+        404: 'Not found'
+    },
+    operation_summary="Update a Medication SKU",
+    operation_description="Updates the details of an existing Medication SKU using a full update (PUT)."
+)
+
 @api_view(['PUT'])
 def update_sku(request, pk):
     if request.method  == 'PUT':
