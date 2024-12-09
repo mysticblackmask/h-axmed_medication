@@ -15,7 +15,7 @@ class MedicationSKU(models.Model):
     def __str__(self):
         return f"{self.medication_name} {self.formulation} {self.dosage}{self.unit}"
 
-     def fuzzy_unique(name, formulation, dosage, unit, threshold=90):
+    def fuzzy_unique(name, formulation, dosage, unit, threshold=90):
         skus = MedicationSKU.objects.filter(
             formulation__iexact=formulation,
             dosage=dosage,
