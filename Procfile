@@ -1,1 +1,1 @@
-web: gunicorn h-axmed_medication.wsgi
+web: gunicorn axmed.wsgi
