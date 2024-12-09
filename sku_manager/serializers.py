@@ -2,11 +2,9 @@ from rest_framework import serializers
 from .models import MedicationSKU
 
 class MedicationSKUSerializer(serializers.ModelSerializer):
-    phonetic_name = serializers.CharField(read_only=True)
-
     class Meta:
         model = MedicationSKU
-        fields = ['id', 'medication_name', 'formulation', 'dosage', 'unit', 'phonetic_name']
+        fields = ['id', 'medication_name', 'formulation', 'dosage', 'unit']
 
     def validate_dosage(self, value):
         if value <= 0:

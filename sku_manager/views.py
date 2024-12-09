@@ -27,11 +27,6 @@ def create_sku(request):
     if request.method == 'POST':
         serializer = MedicationSKUSerializer(data=request.data)
         if serializer.is_valid():
-            medication_name = request.data.get('medication_name')
-            phonetic_name = soundex(medication_name)
-            existing_sku = MedicationSKU.objects.filter(phonetic_name=phonetic_name).first()
-            if existing_sku:
-                return Response({"error": "Medication name already exists"}, status=status.HTTP_400_BAD_REQUEST)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -50,17 +45,11 @@ def create_sku(request):
 
 @api_view(['PUT'])
 def update_sku(request, pk):
-    if request.method == 'PUT':
+    if request.method  == 'PUT':
         try:
             sku = MedicationSKU.objects.get(pk=pk)
             serializer = MedicationSKUSerializer(sku, data=request.data)
             if serializer.is_valid():
-                medication_name = request.data.get('medication_name')
-                phonetic_name = soundex(medication_name)
-                if phonetic_name != sku.phonetic_name:
-                    existing_sku = MedicationSKU.objects.filter(phonetic_name=phonetic_name).first()
-                    if existing_sku and existing_sku.id != pk:
-                        return Response({"error": "Medication name already exists"}, status=status.HTTP_400_BAD_REQUEST)
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -124,18 +113,12 @@ def delete_sku(request, pk):
 
 @api_view(['POST'])
 def bulk_create_skus(request):
-    if request.method == 'POST':
-        skus = request.data.get('skus', [])
-        for sku_data in skus:
-            if 'medication_name' not in sku_data:
-                return Response({"error": "Each SKU must include 'medication_name'."}, status=status.HTTP_400_BAD_REQUEST)
-        phonetic_names = [soundex(sku['medication_name']) for sku in skus]
-        existing_skus = MedicationSKU.objects.filter(phonetic_name__in=phonetic_names)
-        for sku_data, existing_sku in zip(skus, existing_skus):
-            if soundex(sku_data['medication_name']) == existing_sku.phonetic_name:
-                return Response({"error": "Duplicate medication names detected."}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = MedicationSKUSerializer(data=skus, many=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    skus = request.data.get('skus', [])
+    for sku in skus:
+        if 'medication_name' not in sku:
+            return Response({"error": "Each SKU must include 'medication_name'."}, status=status.HTTP_400_BAD_REQUEST)
+    serializer = MedicationSKUSerializer(data=skus, many=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
