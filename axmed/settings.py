@@ -28,6 +28,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+PORT = os.environ.get("PORT", "8000")
+
 ALLOWED_HOSTS = [
     'https://h-axmed-medication.onrender.com'
 ]
