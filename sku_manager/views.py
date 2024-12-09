@@ -6,6 +6,7 @@ from .serializers import MedicationSKUSerializer
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from fuzzywuzzy import fuzz
 
 @api_view(['GET'])
 def read_skus(request):
