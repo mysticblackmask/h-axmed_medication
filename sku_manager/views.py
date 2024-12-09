@@ -14,6 +14,12 @@ def read_skus(request):
         serializer = MedicationSKUSerializer(skus, many=True)
         return Response(serializer.data)
 
+@swagger_auto_schema(
+    method='post',
+    request_body=MedicationSKUSerializer,
+    responses={201: MedicationSKUSerializer}
+)
+
 @api_view(['POST'])
 def create_sku(request):
     if request.method == 'POST':
