@@ -45,3 +45,16 @@ def delete_sku(request, pk):
             return Response({'message': 'SKU deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
         except MedicationSKU.DoesNotExist:
             return Response({'message': 'No data found for the given ID'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+def bulk_create_skus(request):
+    skus = request.data.get('skus', [])
+    for sku in skus:
+        if 'medication_name' not in sku:
+            return Response({"error": "Each SKU must include 'medication_name'."}, status=status.HTTP_400_BAD_REQUEST)
+    serializer = MedicationSKUSerializer(data=skus, many=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

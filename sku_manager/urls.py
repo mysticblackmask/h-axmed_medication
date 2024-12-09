@@ -4,6 +4,7 @@ from .views import (
     create_sku,
     update_sku,
     delete_sku,
+    bulk_create_skus
 )
 
 urlpatterns = [
@@ -11,4 +12,5 @@ urlpatterns = [
     path('create/', create_sku, name='create_sku'),
     path('update/<int:pk>/', update_sku, name='update_sku'),
     path('delete/<int:pk>/', delete_sku, name='delete_sku'),
+    path('bulk-create/', bulk_create_skus, name='bulk_create_skus'),
 ]
