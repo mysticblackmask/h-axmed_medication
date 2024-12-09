@@ -27,7 +27,8 @@ from django.conf import settings
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Axmed Helper",),
+        title="Axmed Helper",
+        default_version='v1',),
     public=True,
     permission_classes=(permissions.AllowAny,),
 )
