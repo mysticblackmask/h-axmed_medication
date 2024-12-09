@@ -35,3 +35,13 @@ def update_sku(request, pk):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except MedicationSKU.DoesNotExist:
             return Response({'message': 'No data found for the given ID'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['DELETE'])
+def delete_sku(request, pk):
+    if request.method == 'DELETE':
+        try:
+            sku = MedicationSKU.objects.get(pk=pk)
+            sku.delete()
+            return Response({'message': 'SKU deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+        except MedicationSKU.DoesNotExist:
+            return Response({'message': 'No data found for the given ID'}, status=status.HTTP_404_NOT_FOUND)
