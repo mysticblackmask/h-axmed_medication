@@ -74,7 +74,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'axmed.wsgi.application'
 
 DATABASES = {
-    'default': dj_database_url.parse(config('DATABASE_URL'), conn_max_age=600)
+    'default': dj_database_url.parse(config('DATABASE_URL'))
 }
 print(config('DATABASE_URL'))
 
