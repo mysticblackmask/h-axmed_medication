@@ -31,7 +31,7 @@ DEBUG = False
 PORT = os.environ.get("PORT", "8000")
 
 ALLOWED_HOSTS = [
-    'https://h-axmed-medication.onrender.com'
+    'h-axmed-medication.onrender.com'
 ]
 
 
