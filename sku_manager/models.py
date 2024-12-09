@@ -29,7 +29,7 @@ class MedicationSKU(models.Model):
                 dosage=dosage,
                 unit__iexact=unit
             ):
-                if fuzz.ratio(name.lower(), sku.medication_name.lower()) > 70:
+                if fuzz.ratio(name.lower(), sku.medication_name.lower()) > 90:
                     return True
 
         return False
