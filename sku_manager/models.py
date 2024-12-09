@@ -15,21 +15,14 @@ class MedicationSKU(models.Model):
     def __str__(self):
         return f"{self.medication_name} {self.formulation} {self.dosage}{self.unit}"
 
-    def fuzzy_unique(name, formulation, dosage, unit):
-        existing_sku = MedicationSKU.objects.filter(
-            Q(medication_name__iexact=name) &
-            Q(formulation__iexact=formulation) &
-            Q(dosage=dosage) &
-            Q(unit__iexact=unit)
-        ).exists()
-
-        if existing_sku:
-            for sku in MedicationSKU.objects.filter(
-                formulation__iexact=formulation,
-                dosage=dosage,
-                unit__iexact=unit
-            ):
-                if fuzz.ratio(name.lower(), sku.medication_name.lower()) > 90:
-                    return True
-
+     def fuzzy_unique(name, formulation, dosage, unit, threshold=90):
+        skus = MedicationSKU.objects.filter(
+            formulation__iexact=formulation,
+            dosage=dosage,
+            unit__iexact=unit
+        )
+        for sku in skus:
+            similarity = fuzz.ratio(name.lower(), sku.medication_name.lower())
+            if similarity >= threshold:
+                return True
         return False
